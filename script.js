@@ -351,14 +351,25 @@ function publishCodes() {
         return;
     }
     const json = JSON.stringify(DEPT_CODES, null, 2);
-    // Intentar usar Clipboard API
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(json).then(() => {
-            alert('Códigos copiados al portapapeles. Ahora pega el contenido en un archivo llamado dept_codes.json en la raíz del repositorio y súbelo (commit + push).\n\nInstrucción rápida:\n1) Crear archivo dept_codes.json con el contenido copiado.\n2) Commit + push al repo usado por GitHub Pages.\n3) Esperar a que Pages despliegue.');
-        }).catch(() => fallbackCopy(json));
-    } else {
+    // Intentar publicar vía API al servidor (requiere que el servidor esté ejecutándose)
+    fetch('/api/codes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ codes: DEPT_CODES, admin: ADMIN_CODE })
+    }).then(async (resp) => {
+        if (resp.ok) {
+            try { await resp.json(); } catch (e) { /* ignore */ }
+            alert('Códigos publicados correctamente en el servidor. Ahora los managers podrán acceder usando el mismo enlace.');
+            // refrescar códigos públicos en la app
+            try { fetchPublicDeptCodes(); } catch (e) { /* ignore */ }
+            return;
+        }
+        // Si no se pudo publicar (404/401/500), usar fallback
         fallbackCopy(json);
-    }
+    }).catch(() => {
+        // Si fetch falla (servidor no levantado), usar fallback a copia/descarga
+        fallbackCopy(json);
+    });
 }
 
 function fallbackCopy(text) {
