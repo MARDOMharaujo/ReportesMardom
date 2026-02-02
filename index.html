@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluación de Reportes - MARDOM</title>
+    <link rel="icon" href="assets/icon.png">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <section id="login-section" class="card">
+            <h2>Acceso Corporativo</h2>
+            <p>Ingrese el código enviado para ser redirigido a sus reportes</p>
+            <input type="password" id="access-code" placeholder="Código de acceso...">
+            <button onclick="handleLogin()">Entrar</button>
+        </section>
+
+        <section id="admin-init" class="card hidden">
+            <h3>Configuración de Datos</h3>
+            <input type="file" id="excel-file" accept=".xlsx, .xls, .csv">
+            <p class="hint">Suba el archivo con la hoja "PowerBI_Reportes"</p>
+            <div id="stored-file-info" style="margin-top:0.75rem;">
+                <!-- Rellenado por script.js: mostrará nombre del archivo y botón de descarga si ya existe -->
+            </div>
+            <div style="margin-top:1rem;display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;">
+                <button class="btn-success" onclick="saveData()">Guardar datos</button>
+                <small style="color:rgba(0,0,0,0.6);font-size:0.9rem;">El archivo se guarda de forma persistente y no puede borrarse desde la interfaz.</small>
+            </div>
+        </section>
+
+        <section id="manager-dashboard" class="hidden">
+            <header class="dashboard-header">
+                <h2 id="dept-title">Departamento:   ---</h2>
+                <button class="btn-outline" onclick="logout()">Guardar y salir</button>
+            </header>
+            
+            <div id="report-list" class="grid-reports">
+                </div>
+        </section>
+
+        <section id="admin-dashboard" class="hidden">
+            <div class="card">
+                <h2>Panel de Administración</h2>
+                <p>Descargue las evaluaciones realizadas por los gerentes.</p>
+                <div id="admin-summary" style="margin-top:1rem;"></div>
+                <div id="codigos-lista" style="margin-top:0.75rem;"></div>
+                <div style="margin-top:1rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
+                    <button class="btn-success" onclick="downloadResults()">Descargar Resultados (.xlsx)</button>
+                    <button class="btn-outline" onclick="clearData()">Borrar Datos Cargados</button>
+                    <button class="btn-outline" onclick="logout()">Salir</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
