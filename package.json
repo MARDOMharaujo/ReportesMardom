@@ -1,0 +1,12 @@
+{
+  "name": "web-dept-codes",
+  "version": "1.0.0",
+  "description": "Pequeño servidor para persistir dept_codes.json y servir la aplicación web",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
